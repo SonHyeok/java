@@ -191,7 +191,6 @@ public class PersonalInfo extends JFrame {
         // JEditorPane으로 변경
         infoArea = new JPanel();
 //        infoArea.setContentType("text/html");
-        infoArea.setVisible(false); // testcode
         //        infoArea.setEditable(false);
         infoArea.setBackground(Color.BLACK);
         JScrollPane scrollPane = new JScrollPane(infoArea);
