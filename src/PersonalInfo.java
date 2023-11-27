@@ -192,6 +192,7 @@ public class PersonalInfo extends JFrame {
         infoArea = new JPanel();
 //        infoArea.setContentType("text/html");
         //        infoArea.setEditable(false);
+        infoArea.setVisible(false);
         infoArea.setBackground(Color.BLACK);
         JScrollPane scrollPane = new JScrollPane(infoArea);
         rightPanel.add(scrollPane, BorderLayout.CENTER);
