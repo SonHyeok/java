@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -47,7 +46,7 @@ public class logCalender extends JFrame{
     private void initComponents() {
         p_center = new JPanel();
 
-        AllPanelButtons allPanelButtons = new AllPanelButtons(loggedInUsername,connection);
+        UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
         c = this.getContentPane();
         c.setLayout(new BorderLayout());
         c.setBackground(Color.BLACK);
@@ -65,7 +64,7 @@ public class logCalender extends JFrame{
         JPanel buttonPanel = new JPanel(new GridLayout(8, 1, 0, 10));
         buttonPanel.setBackground(Color.BLACK);
 
-        allPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
+        userPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
         leftPanel.add(buttonPanel, BorderLayout.CENTER); // 버튼 추가된 왼쪽 패널 add
 
         leftPanel.add(buttonPanel, BorderLayout.CENTER);

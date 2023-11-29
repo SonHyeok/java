@@ -20,7 +20,7 @@ public class MainPage extends JFrame {
     }
 
     private void initComponents() {
-        AllPanelButtons allPanelButtons = new AllPanelButtons(loggedInUsername,connection);
+        UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
         c = this.getContentPane();
         c.setLayout(new BorderLayout());
         c.setBackground(Color.BLACK);
@@ -53,8 +53,8 @@ public class MainPage extends JFrame {
         JPanel newButtonPanel = new JPanel(new GridLayout(4, 1, 0, 10));
         newButtonPanel.setBackground(Color.BLACK);
 
-        allPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
-        allPanelButtons.addRightButtons(newButtonPanel);
+        userPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
+        userPanelButtons.addRightButtons(newButtonPanel);
 
         leftPanel.add(buttonPanel, BorderLayout.CENTER); // 버튼 추가된 왼쪽 패널 add
         rightPanel.add(newButtonPanel, BorderLayout.SOUTH); // 버튼 추가된 오른쪽 패널 add

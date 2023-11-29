@@ -2,10 +2,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.xml.transform.Result;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
@@ -32,7 +29,7 @@ public class TrainerRate extends JFrame {
     }
 
     public void initComponents() throws SQLException {
-        AllPanelButtons allPanelButtons = new AllPanelButtons(loggedInUsername,connection);
+        UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
         c = this.getContentPane();
         c.setLayout(new BorderLayout());
         c.setBackground(Color.BLACK);
@@ -50,7 +47,7 @@ public class TrainerRate extends JFrame {
         JPanel buttonPanel = new JPanel(new GridLayout(8, 1, 0, 10));
         buttonPanel.setBackground(Color.BLACK);
 
-        allPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
+        userPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
         leftPanel.add(buttonPanel, BorderLayout.CENTER); // 버튼 추가된 왼쪽 패널 add
 
         leftPanel.add(buttonPanel, BorderLayout.CENTER);

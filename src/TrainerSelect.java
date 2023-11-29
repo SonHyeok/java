@@ -23,7 +23,7 @@ public class TrainerSelect extends JFrame {
     }
 
     private void initComponents() {
-        AllPanelButtons allPanelButtons = new AllPanelButtons(loggedInUsername,connection);
+        UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
         c = this.getContentPane();
         c.setLayout(new BorderLayout());
         c.setBackground(Color.BLACK);
@@ -41,7 +41,7 @@ public class TrainerSelect extends JFrame {
         JPanel buttonPanel = new JPanel(new GridLayout(8, 1, 0, 10));
         buttonPanel.setBackground(Color.BLACK);
 
-        allPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
+        userPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
         leftPanel.add(buttonPanel, BorderLayout.CENTER); // 버튼 추가된 왼쪽 패널 add
 
 
@@ -100,7 +100,6 @@ public class TrainerSelect extends JFrame {
                         showTrainerInfoDialog(trainerInfo);                    }
                 }
             });
-
 
             trainerPanel.add(trainerButtons[i]); // 그리드 레이아웃 패널에 버튼 추가
         }

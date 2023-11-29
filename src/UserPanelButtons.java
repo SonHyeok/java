@@ -7,17 +7,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AllPanelButtons extends JFrame {
+public class UserPanelButtons extends JFrame {
 
     private String loggedInUsername = null;
     private Connection connection = null;
     JButton[] buttons;
 
-    public AllPanelButtons(String loggedInUsername, Connection connection) {
+    public UserPanelButtons(String loggedInUsername, Connection connection) {
         this.loggedInUsername = loggedInUsername;
         this.connection = connection;
     }
 
+
+    // 메인 페이지 왼쪽 버튼 추가 메소드
     public void addLeftButtons(JPanel buttonPanel) {
         buttonPanel.setBackground(Color.BLACK);
 
@@ -128,7 +130,9 @@ public class AllPanelButtons extends JFrame {
         });
         buttonPanel.add(buttons[7]);
     }
+    //----------------------------------------------------------------------------------------------
 
+    // 메인 페이지 오른쪽 패널 버튼 추가 함수-------------------------------------------------------------
     public void addRightButtons(JPanel newButtonPanel){
         buttons[8] = new JButton("PT구매");
         buttons[8].setForeground(Color.WHITE);
@@ -187,7 +191,10 @@ public class AllPanelButtons extends JFrame {
         );
         newButtonPanel.add(buttons[11]);
     }
-    private void performMembershipPurchase(int months, int pointsRequired, JEditorPane infoArea) {
+    //----------------------------------------------------------------------------------------------
+
+    //MemberShip 회원권 구매 함수--------------------------------------------------------------------------------
+    private void performMembershipPurchase(int months, int pointsRequired, JEditorPane infoArea) {// 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
         try {
             String checkPoints = "SELECT MemberPoint FROM members WHERE MemberEmail=?";
             PreparedStatement checkPointsStatement = connection.prepareStatement(checkPoints);
@@ -221,7 +228,10 @@ public class AllPanelButtons extends JFrame {
             e.printStackTrace();
         }
     }
-    public void addMemberShipButton(JPanel newButtonPanel, JEditorPane infoArea){
+    //----------------------------------------------------------------------------------------------
+
+    // MemberShip.java 버튼 추가 메소드----------------------------------------------------------------
+    public void addMemberShipButton(JPanel newButtonPanel, JEditorPane infoArea){// 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
         newButtonPanel.setBackground(Color.BLACK);
 
         buttons[8] = new JButton("3개월 : 180,000 P");
@@ -260,8 +270,11 @@ public class AllPanelButtons extends JFrame {
         });
         newButtonPanel.add(buttons[10]);
     }
+    //----------------------------------------------------------------------------------------------
 
-    public void addMemberShipPTButtons(JPanel newButtonPanel, JEditorPane infoArea){
+
+    //MemberShipPT 버튼 추가 메소드--------------------------------------------------------------------
+    public void addMemberShipPTButtons(JPanel newButtonPanel, JEditorPane infoArea){ // 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
         buttons[8] = new JButton("10회 : 500,000 P");
         buttons[8].setForeground(Color.WHITE);
         buttons[8].setBackground(Color.DARK_GRAY);
@@ -298,13 +311,10 @@ public class AllPanelButtons extends JFrame {
         });
         newButtonPanel.add(buttons[10]);
     }
-    private void openMainPage() {
-        MainPage mainPage = new MainPage(loggedInUsername, connection);
-        mainPage.setVisible(true);
-        dispose();
-    }
+    //----------------------------------------------------------------------------------------------
 
-    private void displayMemberInfo(JEditorPane infoArea) {
+    // MemberShip, MemberShipPT 페이지 갱신 메소드-----------------------------------------------------
+    private void displayMemberInfo(JEditorPane infoArea) {// 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
         try {
             String sql = "SELECT * FROM Members WHERE MemberEmail=?";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -328,8 +338,10 @@ public class AllPanelButtons extends JFrame {
             e.printStackTrace();
         }
     }
+    //----------------------------------------------------------------------------------------------
 
-    private void performPTPurchase(int sessions, int pointsRequired, JEditorPane infoArea) {
+    // MemberShipPT PT 구매 함수--------------------------------------------------------------------
+    private void performPTPurchase(int sessions, int pointsRequired, JEditorPane infoArea) {// 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
         try {
             String checkPoints = "SELECT MemberPoint FROM members WHERE MemberEmail=?";
             PreparedStatement checkPointsStatement = connection.prepareStatement(checkPoints);
@@ -363,6 +375,8 @@ public class AllPanelButtons extends JFrame {
             e.printStackTrace();
         }
     }
+    //----------------------------------------------------------------------------------
+
 
     private void PersonalInfo() throws SQLException {
         PersonalInfo personalInfo= new PersonalInfo(loggedInUsername, connection);
@@ -392,5 +406,11 @@ public class AllPanelButtons extends JFrame {
         dispose();
     }
 
+    private void openMainPage() {
+        MainPage mainPage = new MainPage(loggedInUsername, connection);
+        mainPage.setVisible(true);
+        dispose();
+    }
+    //-------------------------------------------------------------------------------
 
 }
