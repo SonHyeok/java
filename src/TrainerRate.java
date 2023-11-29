@@ -2,10 +2,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.xml.transform.Result;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
@@ -32,127 +29,26 @@ public class TrainerRate extends JFrame {
     }
 
     public void initComponents() throws SQLException {
+        UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
         c = this.getContentPane();
-        c.setLayout(new BorderLayout()); // 레이아웃을 BorderLayout으로 변경
-        c.setBackground(Color.white); // 검은색 배경 설정
+        c.setLayout(new BorderLayout());
+        c.setBackground(Color.BLACK);
 
-        // 좌측 패널 생성
         leftPanel = new JPanel(new BorderLayout());
-        leftPanel.setBackground(Color.BLACK); // 패널 배경색을 검은색으로 설정
-        c.add(leftPanel, BorderLayout.WEST); // 패널을 서쪽에 배치
+        leftPanel.setBackground(Color.BLACK);
+        c.add(leftPanel, BorderLayout.WEST);
 
-        // 좌측 패널의 텍스트 부분
         titleLabel = new JLabel("OO헬스장에 오신걸 환영합니다.", SwingConstants.CENTER);
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setOpaque(true);
         titleLabel.setBackground(Color.DARK_GRAY);
         leftPanel.add(titleLabel, BorderLayout.NORTH);
 
-        // 좌측 패널의 버튼 부분
         JPanel buttonPanel = new JPanel(new GridLayout(8, 1, 0, 10));
-        buttonPanel.setBackground(Color.BLACK); // 버튼 패널 배경색을 검은색으로 설정
+        buttonPanel.setBackground(Color.BLACK);
 
-        // 8개의 버튼 생성
-        buttons = new JButton[8];
-
-        buttons[0] = new JButton("메인페이지");
-        buttons[0].setForeground(Color.WHITE);
-        buttons[0].setBackground(Color.DARK_GRAY);
-        buttons[0].setPreferredSize(new Dimension(150, 50));
-        buttons[0].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openMainPage(loggedInUsername);
-            }
-        });
-        buttonPanel.add(buttons[0]);
-
-        buttons[1] = new JButton("입장");
-        buttons[1].setForeground(Color.WHITE);
-        buttons[1].setBackground(Color.DARK_GRAY);
-        buttons[1].setPreferredSize(new Dimension(150, 50));
-        buttons[1].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        buttonPanel.add(buttons[1]);
-
-        buttons[2] = new JButton("퇴장");
-        buttons[2].setForeground(Color.WHITE);
-        buttons[2].setBackground(Color.DARK_GRAY);
-        buttons[2].setPreferredSize(new Dimension(150, 50));
-        buttons[2].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        buttonPanel.add(buttons[2]);
-
-        buttons[3] = new JButton("개인정보 수정");
-        buttons[3].setForeground(Color.WHITE);
-        buttons[3].setBackground(Color.DARK_GRAY);
-        buttons[3].setPreferredSize(new Dimension(150, 50));
-        buttons[3].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        buttonPanel.add(buttons[3]);
-
-        buttons[4] = new JButton("트레이너 평가");
-        buttons[4].setForeground(Color.WHITE);
-        buttons[4].setBackground(Color.DARK_GRAY);
-        buttons[4].setPreferredSize(new Dimension(150, 50));
-        buttons[4].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-            }
-        });
-        buttonPanel.add(buttons[4]);
-
-        buttons[5] = new JButton("게시판");
-        buttons[5].setForeground(Color.WHITE);
-        buttons[5].setBackground(Color.DARK_GRAY);
-        buttons[5].setPreferredSize(new Dimension(150, 50));
-        buttons[5].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-            }
-        });
-        buttonPanel.add(buttons[5]);
-
-        buttons[6] = new JButton("운동메이트");
-        buttons[6].setForeground(Color.WHITE);
-        buttons[6].setBackground(Color.DARK_GRAY);
-        buttons[6].setPreferredSize(new Dimension(150, 50));
-        buttons[6].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        buttonPanel.add(buttons[6]);
-
-        buttons[7] = new JButton("장터");
-        buttons[7].setForeground(Color.WHITE);
-        buttons[7].setBackground(Color.DARK_GRAY);
-        buttons[7].setPreferredSize(new Dimension(150, 50));
-        buttons[7].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-            }
-        });
-        buttonPanel.add(buttons[7]);
+        userPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
+        leftPanel.add(buttonPanel, BorderLayout.CENTER); // 버튼 추가된 왼쪽 패널 add
 
         leftPanel.add(buttonPanel, BorderLayout.CENTER);
 

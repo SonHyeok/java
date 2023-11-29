@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -47,6 +46,7 @@ public class logCalender extends JFrame{
     private void initComponents() {
         p_center = new JPanel();
 
+        UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
         c = this.getContentPane();
         c.setLayout(new BorderLayout());
         c.setBackground(Color.BLACK);
@@ -64,109 +64,9 @@ public class logCalender extends JFrame{
         JPanel buttonPanel = new JPanel(new GridLayout(8, 1, 0, 10));
         buttonPanel.setBackground(Color.BLACK);
 
-        buttons = new JButton[11];
+        userPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
+        leftPanel.add(buttonPanel, BorderLayout.CENTER); // 버튼 추가된 왼쪽 패널 add
 
-        buttons[0] = new JButton("메인페이지");
-        buttons[0].setForeground(Color.WHITE);
-        buttons[0].setBackground(Color.DARK_GRAY);
-        buttons[0].setPreferredSize(new Dimension(150, 50));
-        buttons[0].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openMainPage(loggedInUsername);
-            }
-        });
-        buttonPanel.add(buttons[0]);
-
-        buttons[1] = new JButton("입장");
-        buttons[1].setForeground(Color.WHITE);
-        buttons[1].setBackground(Color.DARK_GRAY);
-        buttons[1].setPreferredSize(new Dimension(150, 50));
-        buttons[1].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        buttonPanel.add(buttons[1]);
-
-        buttons[2] = new JButton("퇴장");
-        buttons[2].setForeground(Color.WHITE);
-        buttons[2].setBackground(Color.DARK_GRAY);
-        buttons[2].setPreferredSize(new Dimension(150, 50));
-        buttons[2].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-            }
-        });
-        buttonPanel.add(buttons[2]);
-
-        buttons[3] = new JButton("개인정보 수정");
-        buttons[3].setForeground(Color.WHITE);
-        buttons[3].setBackground(Color.DARK_GRAY);
-        buttons[3].setPreferredSize(new Dimension(150, 50));
-        buttons[3].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-            }
-        });
-        buttonPanel.add(buttons[3]);
-
-        buttons[4] = new JButton("트레이너 평가");
-        buttons[4].setForeground(Color.WHITE);
-        buttons[4].setBackground(Color.DARK_GRAY);
-        buttons[4].setPreferredSize(new Dimension(150, 50));
-        buttons[4].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-            }
-        });
-        buttonPanel.add(buttons[4]);
-
-        buttons[5] = new JButton("게시판");
-        buttons[5].setForeground(Color.WHITE);
-        buttons[5].setBackground(Color.DARK_GRAY);
-        buttons[5].setPreferredSize(new Dimension(150, 50));
-        buttons[5].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-            }
-        });
-        buttonPanel.add(buttons[5]);
-
-        buttons[6] = new JButton("운동메이트");
-        buttons[6].setForeground(Color.WHITE);
-        buttons[6].setBackground(Color.DARK_GRAY);
-        buttons[6].setPreferredSize(new Dimension(150, 50));
-        buttons[6].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-            }
-        });
-        buttonPanel.add(buttons[6]);
-
-        buttons[7] = new JButton("장터");
-        buttons[7].setForeground(Color.WHITE);
-        buttons[7].setBackground(Color.DARK_GRAY);
-        buttons[7].setPreferredSize(new Dimension(150, 50));
-        buttons[7].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-            }
-        });
-        buttonPanel.add(buttons[7]);
         leftPanel.add(buttonPanel, BorderLayout.CENTER);
 
         rightPanel = new JPanel(new BorderLayout());
