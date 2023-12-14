@@ -14,7 +14,7 @@ import java.util.Enumeration;
 public class TrainingMatePost extends JFrame {
     private Container c;
     private JPanel leftPanel, rightPanel;
-    private JLabel titleLabel;
+    private JLabel titleLabel, titleText;
     private String loggedInUsername;
     private ResultSet rs;
     private PreparedStatement stmt;
@@ -27,6 +27,7 @@ public class TrainingMatePost extends JFrame {
 
     Connection connection;
 
+    String inspectSQL = "SELECT * FROM workoutmate WHERE memberemail = ? and workoutdate = ? and workouttime = ?";
     String postSQL = "INSERT INTO workoutmate(memberemail,workoutdate,workouttime,workoutpart,meetingplace) VALUES(?,?,?,?,?)";
 
     TrainingMatePost(String loggedInUsername, Connection connection) {
@@ -39,6 +40,7 @@ public class TrainingMatePost extends JFrame {
     private void initComponents() {
         UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
         c = this.getContentPane();
+        // 최상위 프레임 정보 변수에 저장
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(c);
 
         c.setLayout(new BorderLayout());
@@ -61,13 +63,20 @@ public class TrainingMatePost extends JFrame {
         leftPanel.add(buttonPanel, BorderLayout.CENTER); // 버튼 추가된 왼쪽 패널 add
 
         rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setBackground(Color.BLACK);
+
+        titleText = new JLabel("운동메이트 게시하기");
+        titleText.setForeground(Color.BLACK);
+        titleText.setBackground(Color.WHITE);
+        titleText.setFont(new Font("맑은 고딕", Font.BOLD, 50));  // 폰트
+        titleText.setHorizontalAlignment(JLabel.CENTER);  // 글자 가운데 배치
+
+        rightPanel.add(titleText, BorderLayout.NORTH);
+
         c.add(rightPanel, BorderLayout.CENTER);
         Mate(rightPanel); //오른쪽 패널 채우기
 
         JPanel newButtonPanel = new JPanel(new GridLayout(4, 1, 0, 10));
         newButtonPanel.setBackground(Color.BLACK);
-
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
@@ -76,7 +85,7 @@ public class TrainingMatePost extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private static JRadioButton getSelectedBtn(ButtonGroup bg){
+    private static JRadioButton getSelectedBtn(ButtonGroup bg){ // 현재 선택된 라디오 버튼의 값 반환하는 메소드
         Enumeration<AbstractButton> elements = bg.getElements();
         while (elements.hasMoreElements()) {
             AbstractButton button = elements.nextElement();
@@ -87,7 +96,7 @@ public class TrainingMatePost extends JFrame {
         return null;
     }
 
-    private void Mate(JPanel rightPanel){
+    private void Mate(JPanel rightPanel){ // 운동메이트 게시글 등록을 위한 컴포넌트 생성하는 메소드
         JComboBox timeBox;
         JComboBox<String> dateBox;
         JComboBox placeBox;
@@ -165,7 +174,7 @@ public class TrainingMatePost extends JFrame {
         timeBox = new JComboBox(times);
 
         // 운동 약속 잡는 패널 생성
-        JPanel promisePanel = new JPanel(new FlowLayout(FlowLayout.CENTER,80,80));
+        JPanel promisePanel = new JPanel(new FlowLayout(FlowLayout.CENTER,80,150));
 
        // 패널에 요소들 추가 및 테두리 생성
         promisePanel.add(new JLabel("시간"));
@@ -187,23 +196,36 @@ public class TrainingMatePost extends JFrame {
         rightPanel.add(totalBox, BorderLayout.CENTER);
         rightPanel.add(postBtn,BorderLayout.SOUTH);
 
-        postBtn.addActionListener(new ActionListener() {
+        postBtn.addActionListener(new ActionListener() { // 게시 버튼 이벤트
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    stmt = connection.prepareStatement(postSQL);
                     // 운동파트가 선택되지 않았을 경우
                     if(getSelectedBtn(workoutParts) == null){
                         JOptionPane.showMessageDialog(null, "운동 파트를 선택해주세요.");}
                     // 운동파트 선택된 경우
                     else{
+                        // 이미 게시한 날짜, 시간인지 검사
+                        stmt = connection.prepareStatement(inspectSQL);
                         stmt.setString(1,loggedInUsername);
                         stmt.setString(2, String.valueOf(dateBox.getSelectedItem()));
                         stmt.setString(3,String.valueOf(timeBox.getSelectedItem()));
-                        stmt.setString(4,getSelectedBtn(workoutParts).getText());
-                        stmt.setString(5,String.valueOf(placeBox.getSelectedItem()));
-                        stmt.executeUpdate();
-                        JOptionPane.showMessageDialog(null, "게시되었습니다!");
+
+                        rs = stmt.executeQuery();
+
+                        if(rs.next()){
+                            JOptionPane.showMessageDialog(null, "이미 게시한 시간입니다!");
+                        }
+                        else{ // 게시된 시간이 아닌경우 게시글 작성
+                            stmt = connection.prepareStatement(postSQL);
+                            stmt.setString(1,loggedInUsername);
+                            stmt.setString(2, String.valueOf(dateBox.getSelectedItem()));
+                            stmt.setString(3,String.valueOf(timeBox.getSelectedItem()));
+                            stmt.setString(4,getSelectedBtn(workoutParts).getText());
+                            stmt.setString(5,String.valueOf(placeBox.getSelectedItem()));
+                            stmt.executeUpdate();
+                            JOptionPane.showMessageDialog(null, "게시되었습니다!");
+                        }
                     }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);

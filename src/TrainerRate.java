@@ -68,6 +68,7 @@ public class TrainerRate extends JFrame {
         selectTrainer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                topFrame.dispose();
                 new TrainerSelect(loggedInUsername,connection);
             }
         });
@@ -181,12 +182,5 @@ public class TrainerRate extends JFrame {
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
-    }
-
-    private void openMainPage(String loggedInUsername) {
-        MainPage mainPage = new MainPage(loggedInUsername,connection);
-        mainPage.setVisible(true);
-        setVisible(false);
-        //dispose();
     }
 }
