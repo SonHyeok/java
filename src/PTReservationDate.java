@@ -9,7 +9,7 @@ public class PTReservationDate extends JFrame {
     private Container c;
     private JPanel leftPanel, rightPanel, topPanel, middlePanel, bottomPanel;
     private JLabel titleLabel, titleText, subText;
-    private JButton[] buttons;
+    JButton[] buttons = new JButton[12];
     private JButton selectTimeButton;
     private JTextArea infoArea;
     private Connection connection;
@@ -28,21 +28,18 @@ public class PTReservationDate extends JFrame {
     int startDay; //월의 시작 요일
     int lastDate; //월의 마지막 날
 
-
-
     PTReservationDate(String loggedInUsername, Connection connection, String selectedTrainer) {
         this.loggedInUsername = loggedInUsername;
         this.connection = connection;
         this.selectedTrainer = selectedTrainer;
         initComponents();
-
     }
-
-
 
     public void initComponents() {
         UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
         c = this.getContentPane();
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(c);
+
         c.setLayout(new BorderLayout());
         c.setBackground(Color.BLACK);
 
@@ -59,7 +56,7 @@ public class PTReservationDate extends JFrame {
         JPanel buttonPanel = new JPanel(new GridLayout(8, 1, 0, 10));
         buttonPanel.setBackground(Color.BLACK);
 
-        userPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
+        userPanelButtons.addLeftButtons(buttonPanel,buttons,topFrame); // 패널에 버튼 추가
         leftPanel.add(buttonPanel, BorderLayout.CENTER); // 버튼 추가된 왼쪽 패널 add
 
         // 우측 패널 생성

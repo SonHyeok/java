@@ -1,23 +1,25 @@
-
 import javax.swing.*;
 import java.awt.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-public class MemberShip extends JFrame{
+public class TrainingMateBoard extends JFrame {
     private Container c;
     private JPanel leftPanel, rightPanel;
     private JLabel titleLabel;
-    private JEditorPane infoArea;
     private String loggedInUsername;
+    private ResultSet rs;
+    private PreparedStatement stmt;
+    private Connection connection;
     JButton[] buttons = new JButton[12];
 
-    Connection connection;
-    MemberShip(String loggedInUsername, Connection connection) {
+    TrainingMateBoard(String loggedInUsername, Connection connection) {
         this.loggedInUsername = loggedInUsername;
         this.connection = connection; // connection 변수를 클래스 멤버 변수에 할당
         initComponents();
-        displayMemberInfo();
     }
+
 
     private void initComponents() {
         UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
@@ -47,48 +49,14 @@ public class MemberShip extends JFrame{
         rightPanel.setBackground(Color.BLACK);
         c.add(rightPanel, BorderLayout.CENTER);
 
-        infoArea = new JEditorPane();
-        infoArea.setContentType("text/html");
-        infoArea.setEditable(false);
-        infoArea.setBackground(Color.BLACK);
-        JScrollPane scrollPane = new JScrollPane(infoArea);
-        rightPanel.add(scrollPane, BorderLayout.CENTER);
-
         JPanel newButtonPanel = new JPanel(new GridLayout(4, 1, 0, 10));
         newButtonPanel.setBackground(Color.BLACK);
-        userPanelButtons.addMemberShipButton(newButtonPanel,infoArea,buttons);
 
-        rightPanel.add(newButtonPanel, BorderLayout.SOUTH);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
         setTitle("헬스장 출입 관리 시스템 - 메인 페이지");
         setResizable(false);
         setLocationRelativeTo(null);
-
-    }
-    private void displayMemberInfo() {
-        try {
-            String sql = "SELECT * FROM members WHERE MemberEmail=?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, loggedInUsername);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                // HTML 형식으로 문자열 구성
-                String htmlText = "<html>";
-                htmlText += "<div style='text-align: center; color: white; font-size: 28px; font-family: \"맑은 고딕\", sans-serif;'>";
-                htmlText += "<b>회원 이용권 구매</b> " + "<br>" + "<br>";
-                htmlText += "<b>회원님의 남은 포인트:</b> " + resultSet.getInt("MemberPoint") + "<br>";
-                htmlText += "<b>회원님의 남은 기간:</b> " + resultSet.getInt("MemberDate") + "일" + "<br>";
-                htmlText += "<b>PT횟수:</b> " + resultSet.getInt("MemberPT") + "<br>";
-                htmlText += "</div>";
-                htmlText += "</html>";
-
-                infoArea.setText(htmlText);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

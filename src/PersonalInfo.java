@@ -11,7 +11,7 @@ public class PersonalInfo extends JFrame {
     private Container c;
     private JPanel leftPanel, rightPanel;
     private JLabel titleLabel;
-    private JButton[] buttons;
+    JButton[] buttons = new JButton[12];
     private JEditorPane infoArea;
     private String loggedInUsername;
     PreparedStatement preparedStatement = null;
@@ -61,6 +61,8 @@ public class PersonalInfo extends JFrame {
     private void initComponents() {
         UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
         c = this.getContentPane();
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(c);
+
         c.setLayout(new BorderLayout());
         c.setBackground(Color.BLACK);
 
@@ -77,7 +79,7 @@ public class PersonalInfo extends JFrame {
         JPanel buttonPanel = new JPanel(new GridLayout(8, 1, 0, 10));
         buttonPanel.setBackground(Color.BLACK);
 
-        userPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
+        userPanelButtons.addLeftButtons(buttonPanel,buttons,topFrame); // 패널에 버튼 추가
         leftPanel.add(buttonPanel, BorderLayout.CENTER); // 버튼 추가된 왼쪽 패널 add
 
         rightPanel = new JPanel(new BorderLayout());

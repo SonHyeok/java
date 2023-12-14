@@ -36,20 +36,8 @@ public class AdminMemberAdd extends JFrame {
         titleLabel.setBackground(Color.DARK_GRAY);
         leftPanel.add(titleLabel, BorderLayout.NORTH);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(5, 1, 0, 10));
-        buttonPanel.setBackground(Color.BLACK);
-
         AdminPanelButtons ap = new AdminPanelButtons(loggedInUsername, connection);
-        ap.addAdminLeftButtons(buttonPanel);
-        leftPanel.add(buttonPanel, BorderLayout.CENTER);
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 800);
-        setTitle("헬스장 출입 관리 시스템 - 메인 페이지");
-        setResizable(false);
-        setLocationRelativeTo(null);
-
-        leftPanel.add(buttonPanel, BorderLayout.CENTER);
+        leftPanel.add(ap);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);

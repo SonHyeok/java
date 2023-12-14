@@ -9,7 +9,7 @@ public class MainPage extends JFrame {
     private JLabel titleLabel;
     private JEditorPane infoArea;
     private String loggedInUsername;
-
+    JButton[] buttons =  new JButton[12];
     Connection connection;
 
     MainPage(String loggedInUsername, Connection connection) {
@@ -22,6 +22,8 @@ public class MainPage extends JFrame {
     private void initComponents() {
         UserPanelButtons userPanelButtons = new UserPanelButtons(loggedInUsername,connection);
         c = this.getContentPane();
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(c);
+
         c.setLayout(new BorderLayout());
         c.setBackground(Color.BLACK);
 
@@ -53,8 +55,8 @@ public class MainPage extends JFrame {
         JPanel newButtonPanel = new JPanel(new GridLayout(4, 1, 0, 10));
         newButtonPanel.setBackground(Color.BLACK);
 
-        userPanelButtons.addLeftButtons(buttonPanel); // 패널에 버튼 추가
-        userPanelButtons.addRightButtons(newButtonPanel);
+        userPanelButtons.addLeftButtons(buttonPanel, buttons,topFrame); // 패널에 버튼 추가
+        userPanelButtons.addRightButtons(newButtonPanel, buttons,topFrame);
 
         leftPanel.add(buttonPanel, BorderLayout.CENTER); // 버튼 추가된 왼쪽 패널 add
         rightPanel.add(newButtonPanel, BorderLayout.SOUTH); // 버튼 추가된 오른쪽 패널 add
