@@ -36,12 +36,8 @@ public class AdminMemberPoint extends JFrame {
         titleLabel.setBackground(Color.DARK_GRAY);
         leftPanel.add(titleLabel, BorderLayout.NORTH);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(5, 1, 0, 10));
-        buttonPanel.setBackground(Color.BLACK);
-
         AdminPanelButtons ap = new AdminPanelButtons(loggedInUsername, connection);
-        ap.addAdminLeftButtons(buttonPanel);
-        leftPanel.add(buttonPanel, BorderLayout.CENTER);
+        leftPanel.add(ap);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);

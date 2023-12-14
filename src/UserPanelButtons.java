@@ -111,7 +111,11 @@ public class UserPanelButtons extends JFrame {
         buttons[6].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    TrainingMate();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
 
             }
         });
@@ -403,6 +407,12 @@ public class UserPanelButtons extends JFrame {
     private void TrainerRate() throws SQLException {
         TrainerRate trainerRate= new TrainerRate(loggedInUsername, connection);
         trainerRate.setVisible(true);
+        dispose();
+    }
+
+    private void TrainingMate() throws SQLException {
+        TrainingMatePost trainingMatePost = new TrainingMatePost(loggedInUsername, connection);
+        trainingMatePost.setVisible(true);
         dispose();
     }
 

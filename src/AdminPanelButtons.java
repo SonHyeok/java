@@ -4,18 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 
-public class AdminPanelButtons extends JFrame {
+public class AdminPanelButtons extends JPanel {
     private String loggedInUsername = null;
     private Connection connection = null;
     JButton[] buttons;
 
-    AdminPanelButtons(String loggedInUsername, Connection connection){
+    public AdminPanelButtons(String loggedInUsername, Connection connection) {
         this.loggedInUsername = loggedInUsername;
         this.connection = connection;
+        setLayout(new GridLayout(5, 1));
+        addAdminLeftButton();
     }
 
-    // 어드민 메인 페이지 왼쪽 패널 버튼 추가 메소드
-    public void addAdminLeftButtons(JPanel buttonPanel){
+    public void addAdminLeftButton() {
         buttons = new JButton[5];
 
         buttons[0] = new JButton("메인페이지");
@@ -28,7 +29,7 @@ public class AdminPanelButtons extends JFrame {
                 openAdminPage();
             }
         });
-        buttonPanel.add(buttons[0]);
+        add(buttons[0]);
 
         buttons[1] = new JButton("회원추가");
         buttons[1].setForeground(Color.WHITE);
@@ -40,7 +41,7 @@ public class AdminPanelButtons extends JFrame {
                 openAdminPageMemberAdd();
             }
         });
-        buttonPanel.add(buttons[1]);
+        add(buttons[1]);
 
         buttons[2] = new JButton("포인트 적립");
         buttons[2].setForeground(Color.WHITE);
@@ -52,7 +53,7 @@ public class AdminPanelButtons extends JFrame {
                 openAdminPoint();
             }
         });
-        buttonPanel.add(buttons[2]);
+        add(buttons[2]);
 
         buttons[3] = new JButton("PT 예약 설정");
         buttons[3].setForeground(Color.WHITE);
@@ -64,7 +65,7 @@ public class AdminPanelButtons extends JFrame {
                 openAdminPTSet();
             }
         });
-        buttonPanel.add(buttons[3]);
+        add(buttons[3]);
 
         buttons[4] = new JButton("장터 관리");
         buttons[4].setForeground(Color.WHITE);
@@ -76,44 +77,44 @@ public class AdminPanelButtons extends JFrame {
                 openAdminMarketBoard();
             }
         });
-        buttonPanel.add(buttons[4]);
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 800);
-        setTitle("헬스장 출입 관리 시스템 - 메인 페이지");
-        setResizable(false);
-        setLocationRelativeTo(null);
+        add(buttons[4]);
     }
 
-    // 어드민 페이지 리다이렉트 함수
     private void openAdminPage() {
-        AdminPage adminPage = new AdminPage(loggedInUsername, connection);
-        adminPage.setVisible(true);
-        dispose();
+        //SwingUtilities.invokeLater(() -> {
+            JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            topFrame.dispose();
+            AdminPage adminPage = new AdminPage(loggedInUsername, connection);
+            adminPage.setVisible(true);
+        //};
+        //)
     }
 
     private void openAdminPageMemberAdd() {
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        topFrame.dispose();
         AdminMemberAdd adminmemberadd = new AdminMemberAdd(loggedInUsername, connection);
         adminmemberadd.setVisible(true);
-        dispose();
     }
 
     private void openAdminPoint() {
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        topFrame.dispose();
         AdminMemberPoint adminmemberpoint = new AdminMemberPoint(loggedInUsername, connection);
         adminmemberpoint.setVisible(true);
-        dispose();
     }
 
     private void openAdminPTSet() {
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        topFrame.dispose();
         AdminPTSet adminptset = new AdminPTSet(loggedInUsername, connection);
         adminptset.setVisible(true);
-        dispose();
     }
 
     private void openAdminMarketBoard() {
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        topFrame.dispose();
         AdminMarket adminmarket = new AdminMarket(loggedInUsername, connection);
         adminmarket.setVisible(true);
-        dispose();
     }
-
 }
