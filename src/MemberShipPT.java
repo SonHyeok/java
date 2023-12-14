@@ -9,10 +9,6 @@ public class MemberShipPT extends JFrame {
     JButton[] buttons = new JButton[12];
     private JEditorPane infoArea;
     private String loggedInUsername;
-
-    String url = "jdbc:mysql://localhost:3306/test";
-    String userName = "root";
-    String password = "0000";
     Connection connection;
 
     MemberShipPT(String loggedInUsername, Connection connection) {

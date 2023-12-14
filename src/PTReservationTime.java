@@ -15,7 +15,6 @@ public class PTReservationTime extends JFrame {
     private JButton reserveButton;
     private JTable timeTable;
     private JScrollPane scrollPane;
-    private JTextArea infoArea;
     private Connection connection;
     // 로그인한 회원에 대한 사용자 정보를 처리하는 필드
     private String loggedInUsername;
@@ -133,8 +132,6 @@ public class PTReservationTime extends JFrame {
         model.addRow(rowData13);
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/java", "root", "0000");
-
             String query = "SELECT Available_Start_Time FROM TrainerSchedule WHERE TrainerName = ? AND SelectDay = ?";  // ?: 값이 동적으로 지정
             PreparedStatement AvailableStartTime = connection.prepareStatement(query);
             AvailableStartTime.setString(1, selectedTrainer);
@@ -143,7 +140,7 @@ public class PTReservationTime extends JFrame {
 
             ResultSetMetaData metaData = resultSet.getMetaData();
             int sizeOfColumn = metaData.getColumnCount();
-            List<Map> list = new ArrayList<Map>();
+            List<Map> list = new ArrayList<>();
             Map<String, Object> map;
             String column;
             while(resultSet.next()) {
@@ -259,6 +256,7 @@ public class PTReservationTime extends JFrame {
                                 addValueStatement.executeUpdate();
 
                                 JOptionPane.showMessageDialog(null, "예약이 완료되었습니다.");
+                                topFrame.dispose();
 
                                 // 다음 페이지 이동 메서드 추가
                                 MainPage mainPage = new MainPage(loggedInUsername, connection);
@@ -297,12 +295,5 @@ public class PTReservationTime extends JFrame {
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
-    }
-
-    private void openMainPage(String loggedInUsername) {
-        MainPage mainPage = new MainPage(loggedInUsername,connection);
-        mainPage.setVisible(true);
-        setVisible(false);
-        //dispose();
     }
 }
