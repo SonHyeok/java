@@ -7,23 +7,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserPanelButtons extends JFrame {
+public class UserPanelButtons extends JPanel {
 
     private String loggedInUsername = null;
     private Connection connection = null;
-    JButton[] buttons;
 
     public UserPanelButtons(String loggedInUsername, Connection connection) {
         this.loggedInUsername = loggedInUsername;
         this.connection = connection;
     }
 
-
     // 메인 페이지 왼쪽 버튼 추가 메소드
-    public void addLeftButtons(JPanel buttonPanel) {
+    public void addLeftButtons(JPanel buttonPanel, JButton[] buttons,JFrame c) {
+        // 파라미터로 버튼 넣을 패널, 페이지 이동 메소드 추가할 버튼, 사용중이던 프레임 받아옴
         buttonPanel.setBackground(Color.BLACK);
-
-        buttons = new JButton[12];
 
         buttons[0] = new JButton("메인페이지");
         buttons[0].setForeground(Color.WHITE);
@@ -32,6 +29,7 @@ public class UserPanelButtons extends JFrame {
         buttons[0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                c.dispose(); // 이전에 사용중이던 프레임 닫기
                 openMainPage();
             }
         });
@@ -44,7 +42,7 @@ public class UserPanelButtons extends JFrame {
         buttons[1].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                c.dispose();
 
             }
         });
@@ -57,7 +55,7 @@ public class UserPanelButtons extends JFrame {
         buttons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                c.dispose();
             }
         });
         buttonPanel.add(buttons[2]);
@@ -70,6 +68,7 @@ public class UserPanelButtons extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    c.dispose();
                     PersonalInfo();
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
@@ -85,8 +84,12 @@ public class UserPanelButtons extends JFrame {
         buttons[4].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
+                try {
+                    c.dispose();
+                    TrainerRate();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         buttonPanel.add(buttons[4]);
@@ -112,6 +115,7 @@ public class UserPanelButtons extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    c.dispose();
                     TrainingMate();
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
@@ -137,7 +141,8 @@ public class UserPanelButtons extends JFrame {
     //----------------------------------------------------------------------------------------------
 
     // 메인 페이지 오른쪽 패널 버튼 추가 함수-------------------------------------------------------------
-    public void addRightButtons(JPanel newButtonPanel){
+    public void addRightButtons(JPanel newButtonPanel, JButton[] buttons,JFrame c){
+        // 파라미터로 버튼 넣을 패널, 페이지 이동 메소드 추가할 버튼, 사용중이던 프레임 받아옴
         buttons[8] = new JButton("PT구매");
         buttons[8].setForeground(Color.WHITE);
         buttons[8].setBackground(Color.DARK_GRAY);
@@ -145,6 +150,7 @@ public class UserPanelButtons extends JFrame {
         buttons[8].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                c.dispose();
                 OpenMemberShipPT();
             }
         });
@@ -157,6 +163,7 @@ public class UserPanelButtons extends JFrame {
         buttons[9].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                c.dispose();
                 OpenMemberShip();
             }
         });
@@ -170,6 +177,7 @@ public class UserPanelButtons extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    c.dispose();
                     TrainerRate();
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
@@ -186,6 +194,7 @@ public class UserPanelButtons extends JFrame {
               @Override
               public void actionPerformed(ActionEvent e) {
                   try {
+                      c.dispose();
                       OpenLogCalender();
                   } catch (SQLException ex) {
                       throw new RuntimeException(ex);
@@ -235,9 +244,8 @@ public class UserPanelButtons extends JFrame {
     //----------------------------------------------------------------------------------------------
 
     // MemberShip.java 버튼 추가 메소드----------------------------------------------------------------
-    public void addMemberShipButton(JPanel newButtonPanel, JEditorPane infoArea){// 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
+    public void addMemberShipButton(JPanel newButtonPanel, JEditorPane infoArea, JButton[] buttons){// 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
         newButtonPanel.setBackground(Color.BLACK);
-
         buttons[8] = new JButton("3개월 : 180,000 P");
         buttons[8].setForeground(Color.WHITE);
         buttons[8].setBackground(Color.DARK_GRAY);
@@ -278,7 +286,7 @@ public class UserPanelButtons extends JFrame {
 
 
     //MemberShipPT 버튼 추가 메소드--------------------------------------------------------------------
-    public void addMemberShipPTButtons(JPanel newButtonPanel, JEditorPane infoArea){ // 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
+    public void addMemberShipPTButtons(JPanel newButtonPanel, JEditorPane infoArea, JButton[] buttons){ // 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
         buttons[8] = new JButton("10회 : 500,000 P");
         buttons[8].setForeground(Color.WHITE);
         buttons[8].setBackground(Color.DARK_GRAY);
@@ -385,41 +393,34 @@ public class UserPanelButtons extends JFrame {
     private void PersonalInfo() throws SQLException {
         PersonalInfo personalInfo= new PersonalInfo(loggedInUsername, connection);
         personalInfo.setVisible(true);
-        dispose();
     }
     private void OpenMemberShip() {
         MemberShip membership = new MemberShip(loggedInUsername, connection);
         membership.setVisible(true);
-        dispose();
     }
 
     private void OpenMemberShipPT() {
         MemberShipPT membershippt = new MemberShipPT(loggedInUsername, connection);
         membershippt.setVisible(true);
-        dispose();
     }
     private void OpenLogCalender() throws SQLException {
         logCalender logCalender = new logCalender(loggedInUsername, connection);
         logCalender.setVisible(true);
-        dispose();
     }
 
     private void TrainerRate() throws SQLException {
         TrainerRate trainerRate= new TrainerRate(loggedInUsername, connection);
         trainerRate.setVisible(true);
-        dispose();
     }
 
     private void TrainingMate() throws SQLException {
         TrainingMatePost trainingMatePost = new TrainingMatePost(loggedInUsername, connection);
         trainingMatePost.setVisible(true);
-        dispose();
     }
 
     private void openMainPage() {
         MainPage mainPage = new MainPage(loggedInUsername, connection);
         mainPage.setVisible(true);
-        dispose();
     }
     //-------------------------------------------------------------------------------
 

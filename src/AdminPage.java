@@ -6,7 +6,6 @@ public class AdminPage extends JFrame {
     private Container c;
     private JPanel leftPanel, rightPanel;
     private JLabel titleLabel;
-    private JButton[] buttons;
     private String loggedInUsername;
     private Connection connection;
 
