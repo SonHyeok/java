@@ -63,7 +63,7 @@ public class UserPanelButtons extends JPanel {
                  System.out.println(formatedNow);
 
                  // 입장 날짜 및 시간 db에 입력
-                 String InsertVisitDataSQL = "INSERT INTO visit(memberemail, visitdate,visittime)values(?,?,?);";
+                 String InsertVisitDataSQL = "INSERT INTO visit(memberemail, visitdate, visittime)values(?,?,?);";
                 try {
                     stmt = connection.prepareStatement(InsertVisitDataSQL);
                     stmt.setString(1,loggedInUsername);
@@ -171,7 +171,7 @@ public class UserPanelButtons extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 c.dispose();
-
+                openMarketAndBoardPage();
             }
         });
         buttonPanel.add(buttons[5]);
@@ -543,6 +543,12 @@ public class UserPanelButtons extends JPanel {
     private void openMainPage() {
         MainPage mainPage = new MainPage(loggedInUsername, connection);
         mainPage.setVisible(true);
+    }
+
+    //장터 및 게시판 페이지 이동 메소드
+    private void openMarketAndBoardPage() {
+        MarketAndBoard marketandboard = new MarketAndBoard(loggedInUsername, connection);
+        marketandboard.setVisible(true);
     }
     //-------------------------------------------------------------------------------
 

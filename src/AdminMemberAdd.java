@@ -17,8 +17,8 @@ public class AdminMemberAdd extends JFrame {
     AdminMemberAdd(String loggedInUsername, Connection connection) {
         this.loggedInUsername = loggedInUsername;
         this.connection = connection;
-        initComponents();
-        MemberAdd();
+        initComponents(); // UI 초기화 메서드 호출
+        MemberAdd(); // 회원 추가 메서드 호출
     }
 
     private void initComponents() {
@@ -46,14 +46,15 @@ public class AdminMemberAdd extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    // 회원 추가 메소드
     private void MemberAdd() {
         String email = JOptionPane.showInputDialog("회원 이메일을 입력하세요:");
         if (email != null && !email.isEmpty()) {
-            if (checkEmail(email)) {
+            if (checkEmail(email)) { // 이미 존재하는 이메일인지 확인
                 JOptionPane.showMessageDialog(null, "이미 존재하는 회원입니다.");
                 return;
             }
-
+            // 사용자로부터 회원 정보 입력 받기
             String password = JOptionPane.showInputDialog("비밀번호를 입력하세요:");
             String name = JOptionPane.showInputDialog("이름을 입력하세요:");
             int age = Integer.parseInt(JOptionPane.showInputDialog("나이를 입력하세요:"));
@@ -62,6 +63,7 @@ public class AdminMemberAdd extends JFrame {
             Date birth = Date.valueOf(JOptionPane.showInputDialog("생년월일을 입력하세요 (yyyy-mm-dd):"));
 
             try {
+                // SQL 쿼리를 사용하여 회원 추가
                 String sql = "INSERT INTO members (MemberEmail, MemberPassword, MemberName, MemberAge, MemberSex, MemberPN, MemberBirth, IsAdmin) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, false)";
                 PreparedStatement statement = connection.prepareStatement(sql);
@@ -85,14 +87,14 @@ public class AdminMemberAdd extends JFrame {
         }
     }
 
+    // 이메일 중복 확인 메서드
     private boolean checkEmail(String email) {
         try {
             String sql = "SELECT * FROM members WHERE MemberEmail=?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
-
             ResultSet resultSet = statement.executeQuery();
-            return resultSet.next();
+            return resultSet.next(); // 결과가 존재하면 true, 그렇지 않으면 false 반환
         } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
