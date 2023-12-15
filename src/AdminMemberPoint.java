@@ -17,10 +17,11 @@ public class AdminMemberPoint extends JFrame {
     AdminMemberPoint(String loggedInUsername, Connection connection) {
         this.loggedInUsername = loggedInUsername;
         this.connection = connection;
-        initComponents();
-        AddPoint();
+        initComponents(); // GUI 컴포넌트 초기화 메소드 호출
+        AddPoint(); // 포인트 추가 메소드 호출
     }
 
+    // GUI 컴포넌트를 초기화하는 메소드 => AdminPanelButtons를 사용
     private void initComponents() {
         c = this.getContentPane();
         c.setLayout(new BorderLayout());
@@ -46,6 +47,7 @@ public class AdminMemberPoint extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    // 회원에게 포인트를 추가하는 메소드
     private void AddPoint() {
         String memberId = JOptionPane.showInputDialog("회원 아이디를 입력하세요:");
 
@@ -60,7 +62,7 @@ public class AdminMemberPoint extends JFrame {
                 if (resultSet.next()) {
                     addPoint = Integer.parseInt(JOptionPane.showInputDialog("포인트를 입력하세요:"));
                 }
-                if (addPoint > 0) {
+                if (addPoint > 0) { // 포인트가 정상적으로 입력되면 회원이메일을 통해 유저에게 포인트 지급
                     int currentPoint = resultSet.getInt("MemberPoint");
                     int newPoint = currentPoint + addPoint;
                     String updateSql = "UPDATE members SET MemberPoint=? WHERE MemberEmail=?";
@@ -70,7 +72,7 @@ public class AdminMemberPoint extends JFrame {
                     updateStatement.executeUpdate();
 
                     JOptionPane.showMessageDialog(null, "포인트가 성공적으로 적립되었습니다.");
-                } else {
+                } else { // 회원이 존재하지 않거나 포인트 정상 입력 안할시 사용
                     JOptionPane.showMessageDialog(null, "입력한 아이디의 회원이 존재하지 않거나, 유효한 포인트를 입력하세요.");
                 }
             } catch (SQLException e) {

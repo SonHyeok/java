@@ -3,6 +3,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
@@ -12,7 +14,10 @@ import java.util.List;
 import static java.sql.ResultSet.TYPE_SCROLL_SENSITIVE;
 
 public class TrainerRate extends JFrame {
+    private String recommendTrainerSQL = "UPDATE trainer SET TrainerRate = TrainerRate + 1 WHERE TrainerName = ?";
     private Container c;
+    private ResultSet rs;
+    private PreparedStatement stmt;
     private JPanel leftPanel, rightPanel;
     private JLabel titleLabel, titleText;
     JButton[] buttons = new JButton[12];
@@ -61,18 +66,58 @@ public class TrainerRate extends JFrame {
 
 // 트레이너 선택 버튼---------------------------------------
         JButton selectTrainer = new JButton("트레이너 선택으로 이동");
+        JButton recommendTrainer = new JButton("트레이너 추천");
+        JPanel ButtonPanel = new JPanel(new FlowLayout());
         selectTrainer.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
         selectTrainer.setBackground(Color.BLACK);
         selectTrainer.setForeground(Color.WHITE);
-        selectTrainer.setPreferredSize(new Dimension(100, 100));
+        selectTrainer.setPreferredSize(new Dimension(300, 100));
         selectTrainer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 topFrame.dispose();
-                new TrainerSelect(loggedInUsername,connection);
+                new TrainerSelect(loggedInUsername,connection); //트레이너 선택 창으로 넘어감
             }
         });
-        rightPanel.add(selectTrainer,BorderLayout.SOUTH);
+
+        // 트레이너 추천 버튼 생성 및 이벤트 설정
+        recommendTrainer.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+        recommendTrainer.setBackground(Color.BLACK);
+        recommendTrainer.setForeground(Color.WHITE);
+        recommendTrainer.setPreferredSize(new Dimension(300, 100));
+        recommendTrainer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedTrainer;
+                int row = timeTable.getSelectedRow(); // 선택된 트레이너의 행 가져옴
+                if (row == -1) { // 아무것도 선택되지 않은 경우
+                    JOptionPane.showMessageDialog(null, "추천할 트레이너를 선택해주세요.");
+                }else{ // 트레이너가 선택된 경우
+                    selectedTrainer = String.valueOf(timeTable.getValueAt(row,0));
+                    try {
+                        stmt = connection.prepareStatement(recommendTrainerSQL);
+                        stmt.setString(1,selectedTrainer); // 추천수 1 추가
+
+                        int num = stmt.executeUpdate();
+                        if(num > 0){ // 추천이 성공적으로 완료된 경우
+                            JOptionPane.showMessageDialog(null, "추천 완료되었습니다!");
+                            
+                            // 페이지 갱신
+                            topFrame.dispose(); 
+                            new TrainerRate(loggedInUsername,connection);
+                        }
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                }
+            }
+        });
+
+        ButtonPanel.add(recommendTrainer);
+        ButtonPanel.add(selectTrainer);
+
+        rightPanel.add(ButtonPanel, BorderLayout.SOUTH);
 
         //------------------------------------------------------
 

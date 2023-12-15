@@ -10,6 +10,7 @@ public class AdminPage extends JFrame {
     private Connection connection;
 
 
+    // 메인페이지로 별 다른 기능 없이 관리자 로그인시 처음 사용 하는 화면
     AdminPage(String loggedInUsername, Connection connection) {
         this.loggedInUsername = loggedInUsername;
         this.connection = connection;
