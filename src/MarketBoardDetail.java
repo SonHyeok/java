@@ -32,7 +32,7 @@ public class MarketBoardDetail extends JFrame {
         c.setLayout(new BorderLayout());
 
         // 데이터베이스에서 상세 정보 가져오기 위한 SQL 문
-        String getMarketBoardDetailSQL = "SELECT Title, Detail, Price, BuyerEmail, Category FROM marketandboard WHERE MarketBoardID = ?";
+        String getMarketBoardDetailSQL = "SELECT PostedEmail, Title, Detail, Price, BuyerEmail, Category FROM marketandboard WHERE MarketBoardID = ?";
 
         try {
             stmt = connection.prepareStatement(getMarketBoardDetailSQL);
@@ -40,6 +40,7 @@ public class MarketBoardDetail extends JFrame {
             rs = stmt.executeQuery();
 
             if (rs.next()) {
+                String PostedEmail = rs.getString("PostedEmail");
                 String title = rs.getString("Title");
                 String detail = rs.getString("Detail");
                 String price = rs.getString("Price");
@@ -56,8 +57,8 @@ public class MarketBoardDetail extends JFrame {
                 } else {
                     priceLabel = new JLabel("가격 : " + price);
                     buyerLabel = new JLabel("구매자 이메일 : " + (buyerEmail != null));
-                    if(buyerEmail == null){
-                        // 구매자가 없을 경우에만 구매 버튼을 표시하고 ActionListener 추가
+                    if(buyerEmail == null && !PostedEmail.equals(loggedInUsername)){
+                        // 구매자가 없을 경우와 내가 작성한 장터글이 아닌경우에 구매 버튼을 표시하고 ActionListener 추가
                         purchaseButton = new JButton("구매하기");
                         purchaseButton.addActionListener(new ActionListener() {
                             @Override
