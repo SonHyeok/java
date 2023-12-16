@@ -324,7 +324,7 @@ public class UserPanelButtons extends JPanel {
                     updateMembershipStatement.executeUpdate();
 
                     JOptionPane.showMessageDialog(this, "회원권 구매가 완료되었습니다.", "알림", JOptionPane.INFORMATION_MESSAGE);
-                    displayMemberInfo(infoArea);
+                    displayMemberInfoMember(infoArea);
                 } else {
                     JOptionPane.showMessageDialog(this, "포인트가 부족합니다.", "경고", JOptionPane.WARNING_MESSAGE);
                 }
@@ -427,7 +427,32 @@ public class UserPanelButtons extends JPanel {
     //----------------------------------------------------------------------------------------------
 
     // MemberShip, MemberShipPT 페이지 갱신 메소드-----------------------------------------------------
-    private void displayMemberInfo(JEditorPane infoArea) {// 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
+    private void displayMemberInfoMember(JEditorPane infoArea) {// 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
+        try {
+            String sql = "SELECT * FROM Members WHERE MemberEmail=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, loggedInUsername);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                // HTML 형식으로 문자열 구성
+                String htmlText = "<html>";
+                htmlText += "<div style='text-align: center; color: white; font-size: 28px; font-family: \"맑은 고딕\", sans-serif;'>";
+                htmlText += "<b>회원 이용권 구매</b> " + "<br>" + "<br>";
+                htmlText += "<b>회원님의 남은 포인트:</b> " + resultSet.getInt("MemberPoint") + "<br>";
+                htmlText += "<b>회원님의 남은 기간:</b> " + resultSet.getInt("MemberDate") + "일" + "<br>";
+                htmlText += "<b>PT횟수:</b> " + resultSet.getInt("MemberPT") + "<br>";
+                htmlText += "</div>";
+                htmlText += "</html>";
+
+                infoArea.setText(htmlText);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void displayMemberInfoPT(JEditorPane infoArea) {// 오른쪽 페이지 갱신하려고 파라미터로 infoArea 받아옴
         try {
             String sql = "SELECT * FROM Members WHERE MemberEmail=?";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -479,7 +504,7 @@ public class UserPanelButtons extends JPanel {
                     updatePTStatement.executeUpdate();
 
                     JOptionPane.showMessageDialog(this, "PT 구매가 완료되었습니다.", "알림", JOptionPane.INFORMATION_MESSAGE);
-                    displayMemberInfo(infoArea);
+                    displayMemberInfoPT(infoArea);
                 } else {
                     JOptionPane.showMessageDialog(this, "포인트가 부족합니다.", "경고", JOptionPane.WARNING_MESSAGE);
                 }

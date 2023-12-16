@@ -23,7 +23,7 @@ public class MarketBoardDetail extends JFrame {
         this.connection = connection;
         this.loggedInUsername = loggedInUsername;
         initComponents();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
     // UI 구성을 위한 초기화 메소드

@@ -130,7 +130,7 @@ public class TrainerRate extends JFrame {
         rightPanel.add(titleText, BorderLayout.NORTH);
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("트레이너");
-        model.addColumn("평가 순위");
+        model.addColumn("평가");
 
         String trainerInfoSql = "SELECT TrainerName,TrainerRate from Trainer;";
         // beforeFirst() 사용하기 위한 옵션 추가

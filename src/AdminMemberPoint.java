@@ -49,7 +49,7 @@ public class AdminMemberPoint extends JFrame {
 
     // 회원에게 포인트를 추가하는 메소드
     private void AddPoint() {
-        String memberId = JOptionPane.showInputDialog("회원 아이디를 입력하세요:");
+        String memberId = JOptionPane.showInputDialog("회원 이메일을 입력하세요:");
 
         if (memberId != null && !memberId.isEmpty()) {
             try {
